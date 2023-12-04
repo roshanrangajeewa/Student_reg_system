@@ -1,0 +1,111 @@
+
+<div style="width:90%;margin-top:50px;margin:auto;padding: 20px;" class="row col-12">
+  <h1>Students List</h1>
+  <button mat-raised-button color="primary" (click)="addnewStudent()" >
+    <mat-icon met-list-icon>add</mat-icon>New Student</button>
+    <mat-form-field appearance="standard">
+      <mat-label>Filter</mat-label>
+      <input matInput (keyup)="applyFilter($event)"  placeholder="Write somthing" #input>
+    </mat-form-field>
+
+    <table datatable class="row-border hover">
+      <tr>
+          <td [style.width.%]="gridWidth" style="vertical-align: top;">
+            <div class="mat-elevation-z8"  >
+              <table mat-table [dataSource]="dataStudent" matSort>
+                <ng-cotainer matColumnDef="firstname">
+                  <th mat-header-cell *matHeaderCellDef mat-sort-header>First Name</th>
+                  <td mat-cell *matCellDef="let row">{{row.firstname}}</td>
+                </ng-cotainer>
+                <ng-cotainer matColumnDef="lastname">
+                  <th mat-header-cell *matHeaderCellDef mat-sort-header>Last Name</th>
+                  <td mat-cell *matCellDef="let row">{{row.lastname}}</td>
+                </ng-cotainer>
+                <ng-cotainer matColumnDef="mobile">
+                  <th mat-header-cell *matHeaderCellDef mat-sort-header>Mobile</th>
+                  <td mat-cell *matCellDef="let row">{{row.mobile}}</td>
+                </ng-cotainer>
+                <ng-cotainer matColumnDef="email">
+                  <th mat-header-cell *matHeaderCellDef mat-sort-header>Email</th>
+                  <td mat-cell *matCellDef="let row">{{row.email}}</td>
+                </ng-cotainer>
+                <ng-cotainer matColumnDef="nic">
+                  <th mat-header-cell *matHeaderCellDef mat-sort-header>NIC</th>
+                  <td mat-cell *matCellDef="let row">{{row.nic}}</td>
+                </ng-cotainer>        
+                <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                <tr mat-row *matRowDef="let row;columns:displayedColumns;" (click)="showdetail(row)"></tr>
+                <tr class="mat-row" *matNoDataRow>
+                  <td class="mat-cell" colspan="4">No Data matching filter "{{input.value}}"</td>
+                </tr>
+              </table>
+              <mat-paginator [pageSizeOptions]="[5,10,25,100]" aria-label="Select page of Students">
+              </mat-paginator>
+            </div>
+          </td>
+          <td [style.width.%]="panalWidth" style="vertical-align: top;">
+          <div *ngIf="showDetail" >
+            <h2 mat-dialog-title> Student Details</h2>
+            <mat-dialog-content>
+                <form [formGroup]="formStudent">
+                <mat-grid-list cols="1" rowHeight="80px">
+                    <mat-grid-tile>
+                        <mat-form-field appearance="outline">
+                            <mat-label>First Name</mat-label>
+                            <input matInput autocomplete="off" formControlName="firstname">
+                        </mat-form-field>
+                    </mat-grid-tile>
+                    <mat-grid-tile>
+                        <mat-form-field appearance="outline">
+                            <mat-label>Last Name</mat-label>
+                            <input matInput autocomplete="off" formControlName="lastname">
+                        </mat-form-field>
+                    </mat-grid-tile>
+                    <mat-grid-tile>
+                      <mat-form-field appearance="outline">
+                          <mat-label>Mobile</mat-label>
+                          <input matInput autocomplete="off" formControlName="mobile">
+                      </mat-form-field>
+                  </mat-grid-tile>
+                  <mat-grid-tile>
+                    <mat-form-field appearance="outline">
+                        <mat-label>Email</mat-label>
+                        <input matInput autocomplete="off" formControlName="email" ngModel [email]="true">
+                    </mat-form-field>
+                </mat-grid-tile>
+                <mat-grid-tile>
+                  <mat-form-field appearance="outline">
+                      <mat-label>NIC</mat-label>
+                      <input matInput autocomplete="off" formControlName="nic">
+                  </mat-form-field>
+              </mat-grid-tile>  
+              <mat-grid-tile>
+                <mat-form-field appearance="outline">
+                    <mat-label>Address</mat-label>
+                    <input matInput autocomplete="off" formControlName="address">
+                </mat-form-field>
+            </mat-grid-tile>                                                                
+                    <mat-grid-tile>
+                        <mat-form-field appearance="outline">
+                            <mat-label>Date of Birth</mat-label>
+                            <input matInput [matDatepicker]="picker" autocomplete="off" formControlName="dateofbirth">
+                            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                            <mat-datepicker #picker></mat-datepicker>
+                        </mat-form-field>
+                    </mat-grid-tile> 
+                </mat-grid-list>
+                </form>
+            
+            </mat-dialog-content>
+            
+            <mat-dialog-actions>
+                <button mat-raised-button mat-dialog-close color="warn" (click)="hidedetail()">Cancel</button>
+                <button mat-raised-button color="primary" [disabled]="formStudent.invalid" (click)="addEditStudent()">{{actionButton}}</button>
+                <button mat-raised-button mat-dialog-close color="red" (click)="deleteStudent()">Delete</button>
+            </mat-dialog-actions>   
+          </div>
+          </td>
+      </tr>   
+    </table>
+
+</div>
